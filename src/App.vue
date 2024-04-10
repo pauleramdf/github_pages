@@ -1,12 +1,15 @@
 <template>
   <v-app class="fill-height">
-    <v-main>
-      <HomePageView />
-    </v-main>
+    <component :is="layout">
+      <RouterView />
+    </component>
   </v-app>
 </template>
 
 <script setup lang="ts">
-  //
-import HomePageView from "@/views/HomePageView.vue";
+import { computed, defineAsyncComponent } from "vue";
+
+const DefaultLayout = defineAsyncComponent(() => import("./layouts/DefaultLayout.vue"));
+
+const layout = computed(() => DefaultLayout);
 </script>

@@ -1,9 +1,10 @@
 <template>
   <v-card class="v-layout--full-height">
-    Aplicação para gerenciamento de pedidos de um restaurante
+    <ProductsList />
   </v-card>
 </template>
 
 <script lang="ts" setup>
 
+import ProductsList from "@/components/ProductsList.vue";
 </script>
