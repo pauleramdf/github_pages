@@ -27,9 +27,9 @@ jobs:
      - name: deploy to gh-pages
        run: |
          npm i
-         NODE_ENV=production npm run build-prod
+         npm run build-prod
          cd dist
          git init
          git add -A
          git commit -m "🚀 Deploy id ${GITHUB_RUN_ID}"
-         git push -f "https://github.com/${GITHUB_REPOSITORY}.git" master:gh-pages
+         git push -f "https://github.com/${GITHUB_REPOSITORY}.git" main:gh-pages
