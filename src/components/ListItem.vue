@@ -13,10 +13,9 @@
           </v-avatar>
         </template>
 
-        <template v-slot:append>
+        <template v-slot:append v-if="item.quantity !=0">
            <v-btn
               color="red"
-              icon
               v-if="counter == 0"
               @click="increment"
             >
@@ -24,7 +23,7 @@
             </v-btn>
 
             <div v-else>
-              <v-btn color="red" icon @click="decrement">
+              <v-btn color="red" @click="decrement">
                 <v-icon small>
                   mdi mdi-minus-circle
                 </v-icon>
@@ -32,7 +31,7 @@
               <span class="pa-3" v-if="counter != 0">
                 {{ counter }}
               </span>
-              <v-btn color="green" icon @click="increment">
+              <v-btn color="green" icon @click="increment" :disabled="counter == props.item.quantity">
                 <v-icon small>mdi-plus-circle</v-icon>
               </v-btn>
             </div>
@@ -68,13 +67,17 @@ function setCart(){
 }
 
 function increment(){
-  counter.value++;
-  emit('getItem', {
-    name: props.item.name,
-    counter: counter.value,
-    price: props.item.price,
-    productId: props.item.id,
-  });
+  if(counter.value < props.item.quantity){
+    counter.value++;
+    emit('getItem', {
+      name: props.item.name,
+      counter: counter.value,
+      price: props.item.price,
+      productId: props.item.id,
+    });
+  }else{
+    alert("Quantidade máxima atingida");
+  }
 }
 
 function decrement() {
