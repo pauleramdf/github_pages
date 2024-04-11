@@ -1,6 +1,6 @@
 import { useFetch } from "./useFetch";
 import { ref } from "vue";
-import type {CreateOrder, Order} from "../types/order";
+import type {CreateOrder, Order, PayOrder, ReceiptOrder} from "../types/order";
 
 const urlAPI = import.meta.env.VITE_LANCHONETE_API;
 const urlBase = `${urlAPI}/orders`;
@@ -12,6 +12,7 @@ export const useOrder = () => {
   const pending = ref<boolean>(false);
   const pageSize = ref<number>(20);
   const pendingCreate = ref(false);
+  const pendingPayment = ref(false);
 
   async function refresh(page: number, urlParams = "", size = pageSize.value, sort = ["createdAt", "desc"]): Promise<Order[] | null> {
     pending.value = true;
@@ -37,7 +38,8 @@ export const useOrder = () => {
 
       const response = await fetchBase<any>(`${urlBase}/total_batch`, "POST", undefined, body);
 
-      return response.data;
+      console.log(response);
+      return response;
 
     } catch (error) {
       return null;
@@ -46,5 +48,19 @@ export const useOrder = () => {
     }
   }
 
-  return { data, refresh, pending, totalPages: tPage, pageSize, create, pendingCreate };
+    async function payOrder(payOrder :PayOrder): Promise<ReceiptOrder> {
+      pendingPayment.value = true;
+      try {
+        const body = JSON.stringify(payOrder);
+
+        return fetchBase<any>(`${urlBase}/close`, "POST", undefined, body);;
+      } catch (error) {
+        throw new Error("Erro ao pagar pedido");
+      }finally {
+        pendingPayment.value = false;
+      }
+    }
+
+
+  return { data, refresh, pending, totalPages: tPage, pageSize, create, pendingCreate, payOrder, pendingPayment };
 };

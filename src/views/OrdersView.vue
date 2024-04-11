@@ -23,6 +23,7 @@
 
       <v-window-item class="full-height" :value="2">>
         <v-card>
+          <PaymentDialog :orderResult :paymentDialog @paymentDialog="endpayment"></PaymentDialog>
           <NewOrder :pendingCreate @getItem="updateCart"></NewOrder>
         </v-card>
       </v-window-item>
@@ -52,13 +53,16 @@ import NewOrder from "@/components/NewOrder.vue";
 
 import { useOrder } from "@/composables/useOrder";
 import { ref } from "vue";
-import type { CreateOrder } from "@/types/order";
+import type {CreateOrder, Order} from "@/types/order";
+import PaymentDialog from "@/components/PaymentDialog.vue";
 
 const { create, pendingCreate } = useOrder();
 const tab = ref(0);
 const totalItems = ref(0);
 const totalPrice = ref(0);
 const order = ref<ItemCart[]>([]);
+const orderResult = ref<Order|null>({} as Order);
+const paymentDialog = ref(false);
 
 interface ItemCart {
   productId: string;
@@ -86,10 +90,21 @@ const orderFood =  async () => {
       quantity: item.counter,
     }));
 
-  await create(body);
+  orderResult.value = await create(body);
 
+  makePayment();
+};
+
+const makePayment = () => {
+  console.log("begin Payment");
+  paymentDialog.value = true;
+};
+
+const endpayment = () => {
+  paymentDialog.value = false;
   order.value = [];
   totalItems.value = 0;
   totalPrice.value = 0;
 };
+
 </script>

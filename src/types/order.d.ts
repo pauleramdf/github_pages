@@ -16,3 +16,14 @@ export type CreateOrder = {
   orderId: string;
   products: ProductOrder[];
 };
+
+
+export type PayOrder = {
+  orderId: string;
+  paymentValue: number;
+};
+
+export type ReceiptOrder = {
+  change: number;
+  order: Order;
+};
