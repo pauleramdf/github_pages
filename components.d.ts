@@ -10,7 +10,6 @@ declare module 'vue' {
     ListItem: typeof import('./src/components/ListItem.vue')['default']
     NewOrder: typeof import('./src/components/NewOrder.vue')['default']
     OrdersList: typeof import('./src/components/OrdersList.vue')['default']
-    Payment: typeof import('./src/components/Payment.vue')['default']
     PaymentDialog: typeof import('./src/components/PaymentDialog.vue')['default']
     ProductsList: typeof import('./src/components/ProductsList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
